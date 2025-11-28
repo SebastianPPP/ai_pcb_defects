@@ -29,3 +29,15 @@ We focused on two datasets we found. Ultimately, however, we decided that option
 The augmented dataset contains 10668 images and the corresponding annotation files.
 The data has enough images to train our model to detect defects, and if we are not focused on the percentage maxing it should be good choice. The quality of dataset is great and the resolution satisfies our needs.  
 
+## Data Preprocessing
+
+Data was already augmented. We have normalized data for our model, by changing picture size to 160x160 pixels for first tests.
+
+## Model
+
+We also trained models based on YOLO, comparing different versions to find the optimal solution. The results are posted below:
+
+
+## GUI
+
+The GUI, like the model, is prepared in a Python environment; we use the PyQT5 library for the GUI. The main purpose of the GUI is to load an image to classify potential defects and identify their location on the PCB.
