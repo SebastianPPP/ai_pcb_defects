@@ -12,14 +12,13 @@ def predict_img(
         img_path: Path = None,
         random_val_img: bool = False
 ):
-    if img_path is None and random_val_img:
-        paths = [path for path in Path(DATA_VAL_IMAGES_DIR).iterdir()]
-        img_path = random.choice(paths)
-    model = YOLO(model_path)
+
+    model = YOLO("model/v11n10e320.pt")
     result_ = model(
-        img_path,
-        imgsz=320,
+        "data/test/images/l_light_01_missing_hole_07_2_600.jpg",
+        imgsz=320
     )
+    print(result_[0])
     return [{
         "xyxy": [res.xyxy for res in r.boxes],
         "plot": r.plot(),
