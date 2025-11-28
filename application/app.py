@@ -34,8 +34,7 @@ class ImageProcessor(QWidget):
 
         image_title = QLabel("PCB defects detection")
         image_title.setStyleSheet("""
-            background-color: #262626;
-                color: #FFFFFF;
+                color: #000000;
                 font-family: Titillium;
                 font-size: 25px;
                 """)
@@ -50,6 +49,7 @@ class ImageProcessor(QWidget):
         self.original_label.setFixedSize(480, 480)
         self.original_label.setStyleSheet("""
             background-color: #262626;
+                border-radius: 12px;
                 color: #FFFFFF;
                 font-family: Titillium;
                 font-size: 18px;
@@ -61,6 +61,7 @@ class ImageProcessor(QWidget):
         self.processed_label.setStyleSheet("""
             background-color: #262626;
                 color: #FFFFFF;
+                border-radius: 12px;
                 font-family: Titillium;
                 font-size: 18px;
                 """)
@@ -73,14 +74,17 @@ class ImageProcessor(QWidget):
         combobox_title = QLabel("Choose Model")
         combobox_title.setStyleSheet("""
             background-color: #262626;
-                color: #FFFFFF;
-                font-family: Titillium;
-                font-size: 18px;
-                """)
-        font = combobox_title.font()
-        font.setPointSize(15)
-        combobox_title.setFont(font)
-        combobox_title.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+            qproperty-alignment: AlignCenter;
+            border-radius: 12px;
+            height: 50px;
+            color: #FFFFFF;
+            font-family: Titillium;
+            font-size: 18px;
+            """)
+        #font = combobox_title.font()
+        #font.setPointSize(15)
+        #combobox_title.setFont(font)
+        #combobox_title.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
         self.button_layout.addWidget(combobox_title)
 
         combobox1 = QComboBox()
@@ -90,7 +94,9 @@ class ImageProcessor(QWidget):
         combobox1.addItem('Four')
         combobox1.setStyleSheet("""
             background-color: #262626;
+                border-radius: 12px;
                 color: #FFFFFF;
+                padding: 20px;
                 font-family: Titillium;
                 font-size: 18px;
                 """)
@@ -101,6 +107,8 @@ class ImageProcessor(QWidget):
         btn1_load.clicked.connect(self.load_image)
         btn1_load.setStyleSheet("""
             background-color: #262626;
+                border-radius: 12px;
+                padding: 20px;
                 color: #FFFFFF;
                 font-family: Titillium;
                 font-size: 18px;
@@ -111,10 +119,11 @@ class ImageProcessor(QWidget):
         legend_title = QLabel("Legend")
         legend_title.setStyleSheet("""
             background-color: #262626;
+                border-radius: 12px;
                 color: #FFFFFF;
-                font-family: Titillium;
-                font-size: 18px;
-                """)
+            font-family: Titillium;
+            font-size: 18px;
+            """)
         font = legend_title.font()
         font.setPointSize(15)
         legend_title.setFont(font)
@@ -124,6 +133,7 @@ class ImageProcessor(QWidget):
         legend = QLabel("🟢 - Mouse bite \n 🟠 - Spur \n 🔴 - Missing Hole \n 🔵 - Short \n 🟡 - Open circuit \n 🟣 - Spurious copper")
         legend.setStyleSheet("""
             background-color: #262626;
+                border-radius: 12px;
                 color: #FFFFFF;
                 font-family: Titillium;
                 font-size: 18px;
@@ -142,15 +152,18 @@ class ImageProcessor(QWidget):
 
     def activated(self, index):
         if (index == 0):
+            global model
+            model = YOLO_11N_320_E10
             #loaded_model = load_model("model_11n_15e.h5")
-            predict_img(YOLO_11N_320_E10, random_val_img=True)
+            #predict_img(YOLO_11N_320_E10, random_val_img=True)
             print("Activated index:", index)
 
     def load_image(self):
         file_name, _ = QFileDialog.getOpenFileName(self, "Open Image", "", "Images (*.png *.jpg *.bmp)")
+
         if file_name:
-            global boxes
-            boxes = boxes()
+            points, plot, score, label = predict_img(model, file_name)
+            #boxes = boxes()
             self.image = cv2.imread(file_name)
             self.show_image(self.image, self.original_label)
             self.boundingboxes(self.image, boxes)
