@@ -20,7 +20,8 @@ class ImageProcessor(QWidget):
         self.image = None
         self.processed_image = None
         
-        self.setStyleSheet("background-color: white;")
+        self.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(61, 217, 245), stop:1 rgb(240, 53, 218));")
+        
         #main layout
         self.main_layout = QVBoxLayout()
         self.setLayout(self.main_layout)
@@ -31,6 +32,12 @@ class ImageProcessor(QWidget):
         self.defects_layout = QVBoxLayout()
 
         image_title = QLabel("PCB defects detection")
+        image_title.setStyleSheet("""
+            background-color: #262626;
+                color: #FFFFFF;
+                font-family: Titillium;
+                font-size: 25px;
+                """)
         font = image_title.font()
         font.setPointSize(15)
         image_title.setFont(font)
@@ -40,22 +47,35 @@ class ImageProcessor(QWidget):
         self.original_label = QLabel("PCB Image")
         self.original_label.setAlignment(Qt.AlignCenter)
         self.original_label.setFixedSize(480, 480)
+        self.original_label.setStyleSheet("""
+            background-color: #262626;
+                color: #FFFFFF;
+                font-family: Titillium;
+                font-size: 18px;
+                """)
 
         self.processed_label = QLabel("Image with detected defects")
         self.processed_label.setAlignment(Qt.AlignCenter)
         self.processed_label.setFixedSize(480, 480)
-
+        self.processed_label.setStyleSheet("""
+            background-color: #262626;
+                color: #FFFFFF;
+                font-family: Titillium;
+                font-size: 18px;
+                """)
 
         self.image_layout.addWidget(self.original_label)
         self.main_layout.addLayout(self.image_layout)
         self.image_layout.addWidget(self.processed_label)
 
 
-        btn1_load = QPushButton("Load Image")
-        btn1_load.clicked.connect(self.load_image)
-        self.button_layout.addWidget(btn1_load)
-
         combobox_title = QLabel("Choose Model")
+        combobox_title.setStyleSheet("""
+            background-color: #262626;
+                color: #FFFFFF;
+                font-family: Titillium;
+                font-size: 18px;
+                """)
         font = combobox_title.font()
         font.setPointSize(15)
         combobox_title.setFont(font)
@@ -67,12 +87,33 @@ class ImageProcessor(QWidget):
         combobox1.addItem('Two')
         combobox1.addItem('Three')
         combobox1.addItem('Four')
+        combobox1.setStyleSheet("""
+            background-color: #262626;
+                color: #FFFFFF;
+                font-family: Titillium;
+                font-size: 18px;
+                """)
         self.button_layout.addWidget(combobox1)
         combobox1.activated.connect(self.activated)
 
+        btn1_load = QPushButton("Load Image")
+        btn1_load.clicked.connect(self.load_image)
+        btn1_load.setStyleSheet("""
+            background-color: #262626;
+                color: #FFFFFF;
+                font-family: Titillium;
+                font-size: 18px;
+                """)
+        self.button_layout.addWidget(btn1_load)
         
         #Legenda z tytułem
         legend_title = QLabel("Legend")
+        legend_title.setStyleSheet("""
+            background-color: #262626;
+                color: #FFFFFF;
+                font-family: Titillium;
+                font-size: 18px;
+                """)
         font = legend_title.font()
         font.setPointSize(15)
         legend_title.setFont(font)
@@ -80,6 +121,12 @@ class ImageProcessor(QWidget):
         self.defects_layout.addWidget(legend_title)
 
         legend = QLabel("🟢 - Mouse bite \n 🟠 - Spur \n 🔴 - Missing Hole \n 🔵 - Short \n 🟡 - Open circuit \n 🟣 - Spurious copper")
+        legend.setStyleSheet("""
+            background-color: #262626;
+                color: #FFFFFF;
+                font-family: Titillium;
+                font-size: 18px;
+                """)
         font = legend.font()
         font.setPointSize(10)
         legend.setFont(font)
