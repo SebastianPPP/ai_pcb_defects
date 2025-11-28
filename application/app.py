@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtCore import Qt
+import torch
 
 
 #from tensorflow.keras.models import load_model
@@ -162,11 +163,15 @@ class ImageProcessor(QWidget):
         file_name, _ = QFileDialog.getOpenFileName(self, "Open Image", "", "Images (*.png *.jpg *.bmp)")
 
         if file_name:
-            points, plot, score, label = predict_img(model, file_name)
+            #boxes, plot, score, label = predict_img(model, file_name)
             #boxes = boxes()
+            results = predict_img(model, file_name)
+            boxes = results["xyxy"]
+            score = results["confs"]
+            label = results["classes"]
             self.image = cv2.imread(file_name)
             self.show_image(self.image, self.original_label)
-            self.boundingboxes(self.image, boxes)
+            self.boundingboxes(self.image, boxes, score, label)
             self.show_image(self.image, self.processed_label)
 
 
@@ -178,18 +183,36 @@ class ImageProcessor(QWidget):
         pixmap = QPixmap.fromImage(qimg).scaled(label.width(), label.height(), Qt.KeepAspectRatio)
         label.setPixmap(pixmap)
 
-    def boundingboxes(self, image, boxes):
+    def boundingboxes(self, image, boxes, score, label):
         colors = [(0, 255, 0),(0, 128, 255),(0, 0, 255),(255, 0, 0),(0, 255, 255),(255, 0, 127)]
         labels_dict = {0:"Mouse bite", 1:"Spur", 2:"Missing hole", 3:"Short", 4:"Open circuit", 5:"Spurious copper"}
-        for box in boxes: 
-            startpoint = (box[0], box[1])
-            endpoint = (box[2], box[3])
-            score = box[4]
-            label = box[5]
-            color = colors[label]
-            label_text = labels_dict[label]
-            cv2.rectangle(image, startpoint, endpoint, color, thickness=3)
-            cv2.putText(image, label_text, (box[0], box[1]-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0,0,0), 3)
+
+        if not boxes:
+            print("Boks stop")
+        else:
+            #print(score)
+            #score = score[1].tolist()
+            print(score)
+
+            #label = label[1].tolist()
+            print(label)
+            i = 0
+
+            for box in boxes:
+                box = box.tolist()
+                print(box)
+                print(type(box)) 
+                startpoint = (int(box[0][0]), int(box[0][1]))
+                endpoint = (int(box[0][2]), int(box[0][3]))
+                score1 = score[i].tolist()
+                label1 = label[i].tolist()
+                label_img = int(label1[0])
+                color = colors[label_img]
+                print(color)
+                label_text = labels_dict[label_img]
+                cv2.rectangle(self.image, startpoint, endpoint, color, thickness=3)
+                cv2.putText(self.image, label_text, (int(box[0][0]), int(box[0][1])-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0,0,0), 3)
+                i+=1
         
     
 
