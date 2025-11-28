@@ -6,13 +6,16 @@ from const import YOLO_V8N_160_E8, YOLO_11N_320_E10
 
 def predict_img(
     model_name: str,
-    #img_path: Path = Path("./data/val/images"),
-    #random_val_img: bool = False
+    image_path: str = None,
+    random_val_img: bool = False
 ):
-    print(img_path.resolve())
-    options = [path for path in img_path.resolve().iterdir()]
-    #if random_val_img:
-        #img_path = random.choice(options)
+    if random_val_img:
+        img_path: Path | str = Path("./data/val/images")
+        print(img_path.resolve())
+        options = [path for path in img_path.resolve().iterdir()]
+        img_path = random.choice(options)
+    else:
+        img_path = image_path
     model_path = f"model/{model_name}"
     model = YOLO(model_path)
     result_ = model(
