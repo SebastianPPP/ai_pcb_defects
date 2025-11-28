@@ -11,6 +11,8 @@ def read_file_labels(path: Path) -> pd.DataFrame:
       3: short
       4: open_circuit
       5: spurious_copper
+    X_max, X_min, Y_max, Y_min:
+      - coords of detected objects
     """
     names = ['Type', 'X_max', 'X_min', 'Y_max', 'Y_min', ]
     df = pd.read_csv(path, sep=' ', names=names)
