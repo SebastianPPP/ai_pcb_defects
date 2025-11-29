@@ -131,6 +131,7 @@ Based on tested models we can conclude that:
 2. Image compression to 160x160 from based 600x600 is too much compression and leads to not well trained model (possible due too information loss during resizing).
 3. Accuracy and other metrics are simmilar to each other for other version of model.
 4. Preprocessing data with grayscale or binary threashold leads model to better detection some defects like `open_circuit` but also to worse accuracy in others labels, which make this usage more specialized into some kind of defect
+5. We also try to build our own model prediction with own architecture but we meet technicall issues like not enaugh computing power / RAM memory (for training / preprocessing) or even network connection while trying to download important software like Nvidia Cuda. The base architecture and data_preprocesing are included into repository to show that with enaugh time and computing power we can train this model.
 
 ## GUI
 
