@@ -41,6 +41,41 @@ We chose YOLO because it allows for a simple implementation of simultaneous dete
 
 Examples of the obtained metrics are presented below:
 
+### Model YOLOv8nu - epochs=10, image size=160:
+
+![](./readme_metrics/v8_small/confusion_matrix_normalized.png)
+![](./readme_metrics/v8_small/BoxF1_curve.png)
+![](./readme_metrics/v8_small/BoxP_curve.png)
+
+### Model YOLOv8n - epochs=10, image size=320:
+
+![](./readme_metrics/v8/confusion_matrix_normalized.png)
+![](./readme_metrics/v8/BoxF1_curve.png)
+![](./readme_metrics/v8/BoxP_curve.png)
+
+### Model YOLO11n - epochs=10, image size=320:
+
+![](./readme_metrics/v11/confusion_matrix_normalized.png)
+![](./readme_metrics/v11/BoxF1_curve.png)
+![](./readme_metrics/v11/BoxP_curve.png)
+
+### Model YOLO11n - epochs=10, image size=320, reduced dataset:
+
+![](./readme_metrics/v11_short/confusion_matrix_normalized.png)
+![](./readme_metrics/v11_short/BoxF1_curve.png)
+![](./readme_metrics/v11_short/BoxP_curve.png)
+
+### Model YOLO11n - epochs=10, image size=320, grayscale:
+
+![](./readme_metrics/v11_gray/confusion_matrix_normalized.png)
+![](./readme_metrics/v11_gray/BoxF1_curve.png)
+![](./readme_metrics/v11_gray/BoxP_curve.png)
+
+### Model YOLO11n - epochs=10, image size=320, binary treshold:
+
+![](./readme_metrics/v11_binary/confusion_matrix_normalized.png)
+![](./readme_metrics/v11_binary/BoxF1_curve.png)
+![](./readme_metrics/v11_binary/BoxP_curve.png)
 
 
 
