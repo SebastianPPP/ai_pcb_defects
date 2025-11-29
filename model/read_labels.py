@@ -1,5 +1,9 @@
+import numpy as np
 import pandas as pd
 from pathlib import Path
+import cv2 as cv
+from PIL import Image
+from numpy import asarray
 
 
 def read_file_labels(path: Path) -> pd.DataFrame:
@@ -16,5 +20,10 @@ def read_file_labels(path: Path) -> pd.DataFrame:
     """
     names = ['Type', 'X_max', 'X_min', 'Y_max', 'Y_min', ]
     df = pd.read_csv(path, sep=' ', names=names)
-    print(df)
     return df
+
+
+def read_image_to_matrix(path: Path) -> np.ndarray:
+    image = Image.open(path).resize((320, 320))
+    return asarray(image) / 255.0
+

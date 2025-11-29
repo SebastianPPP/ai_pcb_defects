@@ -16,13 +16,13 @@ VAL_IMAGES_PATH = VAL_PATH / 'images'
 VAL_LABELS_PATH = VAL_PATH / 'labels'
 
 
-TRAIN_LIMIT = 2_000
+TRAIN_LIMIT = 750
 
 print(TRAINING_IMAGES_PATH)
 print(TRAINING_LABELS_PATH)
 data_percent = TRAIN_LIMIT / len([p for p in TRAINING_IMAGES_PATH.iterdir()])
-train_image_paths = [p for p in TRAINING_IMAGES_PATH.iterdir()][:2000]
-train_label_paths = [p for p in TRAINING_LABELS_PATH.iterdir()][:2000]
+train_image_paths = [p for p in TRAINING_IMAGES_PATH.iterdir()][:TRAIN_LIMIT]
+train_label_paths = [p for p in TRAINING_LABELS_PATH.iterdir()][:TRAIN_LIMIT]
 
 TEST_NUM = int(len([p for p in TESTING_IMAGES_PATH.iterdir()]) * data_percent)
 test_image_paths = [p for p in TESTING_IMAGES_PATH.iterdir()][:TEST_NUM]

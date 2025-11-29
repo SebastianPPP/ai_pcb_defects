@@ -8,10 +8,11 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision import datasets, models
 from torchvision.transforms import ToTensor
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 import pandas as pd
 from torchvision.io import decode_image
 import os
-from read_labels import read_file_labels
+from read_labels import read_file_labels, read_image_to_matrix
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -25,14 +26,37 @@ TEST_LABEL_PATH = Path('./data_custom/test/labels')
 VAL_IMG_PATH = Path('./data_custom/val/images')
 VAL_LABEL_PATH = Path('./data_custom/val/labels')
 # load data
-X_train = [path for path in TRAIN_IMG_PATH.iterdir()]
-y_train = [read_file_labels(path)['Type'] for path in TRAIN_LABEL_PATH.iterdir()]
+X_train = np.array([])
+y_train = np.array([])
 
-X_test = [path for path in TEST_IMG_PATH.iterdir()]
-y_test = [read_file_labels(path)['Type'] for path in TEST_LABEL_PATH.iterdir()]
+for i in tqdm(range(0, len([path for path in TRAIN_IMG_PATH.iterdir()]))):
+    labels = read_file_labels(list(TRAIN_LABEL_PATH.iterdir())[i])
+    for label in labels:
+        X_train = np.append(X_train, read_image_to_matrix(list(TRAIN_IMG_PATH.iterdir())[i]))
+        y_train = np.append(y_train, label)
+np.save('X_train.npy', X_train)
+np.save('y_train.npy', y_train)
 
-X_val = [path for path in VAL_IMG_PATH.iterdir()]
-y_val = [read_file_labels(path)['Type'] for path in VAL_LABEL_PATH.iterdir()]
+X_test = np.array([])
+y_test = np.array([])
+for i in tqdm(range(0, len([path for path in TEST_IMG_PATH.iterdir()]))):
+    labels = read_file_labels(list(TEST_LABEL_PATH.iterdir())[i])
+    for label in labels:
+        X_test = np.append(X_test, read_image_to_matrix(list(TEST_IMG_PATH.iterdir())[i]))
+        y_test = np.append(y_test, label)
+np.save('X_test.npy', X_test)
+np.save('y_test.npy', y_test)
+
+
+X_val = np.array([])
+y_val = np.array([])
+for i in range(0, tqdm(len([path for path in VAL_IMG_PATH.iterdir()]))):
+    labels = read_file_labels(list(VAL_LABEL_PATH.iterdir())[i])
+    for label in labels:
+        X_val = np.append(X_val, read_image_to_matrix(list(VAL_IMG_PATH.iterdir())[i]))
+        y_val = np.append(y_val, label)
+np.save('X_val.npy', X_val)
+np.save('y_val.npy', y_val)
 
 print(len(X_train), len(y_train), len(X_val), len(y_val), len(X_test), len(y_test))
 # map data
@@ -74,7 +98,7 @@ class CNN_model(nn.module):
         self.conv2d_1 = nn.Conv2d(3, 16, kernel_size = 4, stride = 2)
         self.conv2d_2 = nn.Conv2d(16, 16, kernel_size = 4, stride = 2)
         self.fc1 = nn.Linear(6400, 128)
-        self.fc2 = nn.Linear(128, 6)  
+        self.fc2 = nn.Linear(128, 6)
 
     def forward(self, x):
         x = self.conv2d_1(x)
