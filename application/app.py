@@ -17,11 +17,11 @@ import torch
 class ImageProcessor(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("PCB defect detection")
+        self.setWindowTitle("PCB DEFECT DETECTION")
         self.setMinimumSize(1000, 600)
         self.image = None
         self.processed_image = None
-        
+        self.examples=0
         self.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(61, 217, 245), stop:1 rgb(240, 53, 218));")
         
         #main layout
@@ -33,10 +33,11 @@ class ImageProcessor(QWidget):
         self.button_layout = QVBoxLayout()
         self.defects_layout = QVBoxLayout()
 
-        image_title = QLabel("PCB defects detection")
+        image_title = QLabel("PCB Defects Detection")
         image_title.setStyleSheet("""
-                color: #000000;
-                font-family: Titillium;
+                color: #000000;               
+                font: 75 10pt "Microsoft YaHei UI";
+                font-weight: bold;
                 font-size: 25px;
                 """)
         font = image_title.font()
@@ -45,25 +46,27 @@ class ImageProcessor(QWidget):
         image_title.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
         self.main_layout.addWidget(image_title)
 
-        self.original_label = QLabel("PCB Image")
+        self.original_label = QLabel("Original PCB Image")
         self.original_label.setAlignment(Qt.AlignCenter)
-        self.original_label.setFixedSize(480, 480)
+        #self.original_label.setFixedSize(400, 400)
         self.original_label.setStyleSheet("""
             background-color: #262626;
                 border-radius: 12px;
                 color: #FFFFFF;
-                font-family: Titillium;
+                font: 75 10pt "Microsoft YaHei UI";
+                font-weight: bold;
                 font-size: 18px;
                 """)
 
-        self.processed_label = QLabel("Image with detected defects")
+        self.processed_label = QLabel("Image with Detected Defects")
         self.processed_label.setAlignment(Qt.AlignCenter)
-        self.processed_label.setFixedSize(480, 480)
+        #self.processed_label.setFixedSize(400, 400)
         self.processed_label.setStyleSheet("""
             background-color: #262626;
                 color: #FFFFFF;
                 border-radius: 12px;
-                font-family: Titillium;
+                font: 75 10pt "Microsoft YaHei UI";
+                font-weight: bold;
                 font-size: 18px;
                 """)
 
@@ -77,9 +80,10 @@ class ImageProcessor(QWidget):
             background-color: #262626;
             qproperty-alignment: AlignCenter;
             border-radius: 12px;
-            height: 50px;
+            padding 20 px;
             color: #FFFFFF;
-            font-family: Titillium;
+            font: 75 10pt "Microsoft YaHei UI";
+            font-weight: bold;
             font-size: 18px;
             """)
         #font = combobox_title.font()
@@ -97,8 +101,8 @@ class ImageProcessor(QWidget):
             background-color: #262626;
                 border-radius: 12px;
                 color: #FFFFFF;
-                padding: 20px;
-                font-family: Titillium;
+                font: 75 10pt "Microsoft YaHei UI";
+                font-weight: bold;
                 font-size: 18px;
                 """)
         self.button_layout.addWidget(combobox1)
@@ -109,12 +113,27 @@ class ImageProcessor(QWidget):
         btn1_load.setStyleSheet("""
             background-color: #262626;
                 border-radius: 12px;
-                padding: 20px;
+                padding: 12px;
                 color: #FFFFFF;
-                font-family: Titillium;
+                font: 75 10pt "Microsoft YaHei UI";
+                font-weight: bold;
                 font-size: 18px;
                 """)
         self.button_layout.addWidget(btn1_load)
+
+
+        btn2_load = QPushButton("Examples")
+        btn2_load.clicked.connect(self.load_example_image)
+        btn2_load.setStyleSheet("""
+            background-color: #262626;
+                border-radius: 12px;
+                padding: 12px;
+                color: #FFFFFF;
+                font: 75 10pt "Microsoft YaHei UI";
+                font-weight: bold;
+                font-size: 18px;
+                """)
+        self.button_layout.addWidget(btn2_load)
         
         #Legenda z tytułem
         legend_title = QLabel("Legend")
@@ -122,7 +141,8 @@ class ImageProcessor(QWidget):
             background-color: #262626;
                 border-radius: 12px;
                 color: #FFFFFF;
-            font-family: Titillium;
+                font: 75 10pt "Microsoft YaHei UI";
+                font-weight: bold;
             font-size: 18px;
             """)
         font = legend_title.font()
@@ -136,8 +156,8 @@ class ImageProcessor(QWidget):
             background-color: #262626;
                 border-radius: 12px;
                 color: #FFFFFF;
-                font-family: Titillium;
-                font-size: 18px;
+                font: 75 10pt "Microsoft YaHei UI";
+                font-weight: bold;
                 """)
         font = legend.font()
         font.setPointSize(10)
@@ -181,6 +201,33 @@ class ImageProcessor(QWidget):
             self.show_image(self.image, self.processed_label)
 
 
+    def load_example_image(self):
+        file1 = "data/examples/1.jpg"
+        file2 = "data/examples/2.jpg"
+        file3 = "data/examples/3.jpg"
+        file4 = "data/examples/4.jpg"
+        file5 = "data/examples/5.jpg"
+        file6 = "data/examples/6.jpg"
+        file7 = "data/examples/7.jpg"
+
+        files = [file1, file2, file3, file4, file5, file6, file7]
+        file_name = files[self.examples]
+
+        if file_name:
+            #boxes, plot, score, label = predict_img(model, file_name)
+            #boxes = boxes()
+            results = predict_img(model, file_name)
+            boxes = results["xyxy"]
+            score = results["confs"]
+            label = results["classes"]
+            self.image = cv2.imread(file_name)
+            self.show_image(self.image, self.original_label)
+            self.boundingboxes(self.image, boxes, score, label)
+            self.show_image(self.image, self.processed_label)
+            self.examples +=1
+        if (self.examples == 7): self.examples = 0
+
+
     def show_image(self, img, label):
         rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         h, w, ch = rgb.shape
@@ -191,7 +238,7 @@ class ImageProcessor(QWidget):
 
     def boundingboxes(self, image, boxes, score, label):
         colors = [(0, 255, 0),(0, 128, 255),(0, 0, 255),(255, 0, 0),(0, 255, 255),(255, 0, 127)]
-        labels_dict = {0:"Mouse bite", 1:"Spur", 2:"Missing hole", 3:"Short", 4:"Open circuit", 5:"Spurious copper"}
+        labels_dict = {0:"MB", 1:"Sp", 2:"MH", 3:"Sh", 4:"OC", 5:"SC"}
 
         if not boxes:
             print("Boks stop")
@@ -217,7 +264,8 @@ class ImageProcessor(QWidget):
                 print(color)
                 label_text = labels_dict[label_img]
                 cv2.rectangle(self.image, startpoint, endpoint, color, thickness=3)
-                cv2.putText(self.image, label_text, (int(box[0][0]), int(box[0][1])-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0,0,0), 3)
+                cv2.putText(self.image, label_text, (int(box[0][0]), int(box[0][1])-10), cv2.FONT_HERSHEY_COMPLEX, 0.9, (0,0,0), 6, cv2.LINE_AA)
+                cv2.putText(self.image, label_text, (int(box[0][0]), int(box[0][1])-10), cv2.FONT_HERSHEY_COMPLEX, 0.9, (255,255,255), 1, cv2.LINE_AA)
                 i+=1
         
     
