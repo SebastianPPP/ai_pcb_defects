@@ -31,11 +31,17 @@ The data has enough images to train our model to detect defects, and if we are n
 
 ## Data Preprocessing
 
-Data was already augmented. We have normalized data for our model, by changing picture size to 160x160 pixels for first tests.
+Data was already augmented. We have normalized data for our model, by changing picture size to 160x160 pixels for first tests and 320x320 in next versions.
 
 ## Model
 
-We also trained models based on YOLO, comparing different versions to find the optimal solution. The results are posted below:
+Model was trained based on YOLO from Ultralytics. We checked three versions: YOLOv5nu, YOLOv8, YOLO11n. The tests also included experimenting with the size of graphics (normalization), dataset, and preprocessing (full color, grayscale, binary).  
+
+We chose YOLO because it allows for a simple implementation of simultaneous detection and classification. As part of the project, we also attempted to develop a model from scratch, but encountered problems combining these features.
+
+Examples of the obtained metrics are presented below:
+
+
 
 
 ## GUI
