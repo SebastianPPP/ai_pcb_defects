@@ -44,6 +44,31 @@ We focused on two datasets we found. Ultimately, however, we decided that option
 The augmented dataset contains 10668 images and the corresponding annotation files.
 The data has enough images to train our model to detect defects, and if we are not focused on the percentage maxing it should be good choice. The quality of dataset is great and the resolution satisfies our needs.  
 
+## Project setup
+
+Project can be locally installed by following steps:
+
+1. Clone repository:
+```bash
+git clone git@github.com:SebastianPPP/Robo-zubry---PCB-AI-defect-detection.git
+# If using http please use https://github.com/SebastianPPP/Robo-zubry---PCB-AI-defect-detection.git
+```
+2. Create / Activate environment:
+```bash
+cd ai_pcb_defects
+python -m venv [VENV_PATH]
+source [VENV_PATH]/bin/activate
+# On windows use [VENV_PATH]\Scripts\activate
+```
+3. Install all requirements:
+```bash
+pip install -r requierements.txt
+```
+4. Run main app:
+```bash
+python application/app.py
+```
+
 ## Data Preprocessing
 
 Data was already augmented. We have normalized data for our model, by changing picture size to 160x160 pixels for first tests and 320x320 in next versions.
