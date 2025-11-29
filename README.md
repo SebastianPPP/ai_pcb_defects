@@ -2,6 +2,7 @@
 ## Table of context
 - [Design Assumptions](#design-assumptions)
 - [Dataset Selection](#dataset-selection)
+- [Project Setup](#project-setup)
 - [Data Preprocessing](#data-preprocessing)
 - [Model](#model)
     - [Model YOLOv8n - epochs=10, image size=160](#model-yolov8nu---epochs10-image-size160)
